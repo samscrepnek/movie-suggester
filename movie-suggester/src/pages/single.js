@@ -5,6 +5,8 @@ function Single() {
   const [searchQuery, setSearchQuery] = useState("");
   const [queryRating, setQueryRating] = useState("");
   const [queryGenres, setQueryGenres] = useState("");
+  const [queryTitle, setQueryTitle] = useState("");
+  const [queryId, setQueryId] = useState("");
   const [movieData, setMovieData] = useState();
 
   const options = {
@@ -23,6 +25,8 @@ function Single() {
     const jsonData = await results.json();
     setQueryRating(jsonData.vote_average.toString());
     setQueryGenres(jsonData.genres.map((genre) => genre.id.toString()).join("%2C%20"));
+    setQueryTitle(jsonData.original_title);
+    setQueryId(jsonData.id);
   };
 
   useEffect(() => {
@@ -30,9 +34,18 @@ function Single() {
   }, []);
 
   let fetchSuggestion = async () => {
-    let results = await fetch(`https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=vote_average.desc&vote_average.gte=${queryRating}&with_genres=${queryGenres}`, options);
+    let suggestedMovie = [];
+    let results = await fetch(`https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=vote_average.asc&vote_average.gte=${queryRating}&with_genres=${queryGenres}`, options);
     const jsonData = await results.json();
-    setMovieData(jsonData.results);
+    let pickMovie = () => {
+      suggestedMovie = jsonData.results[Math.floor(Math.random() * jsonData.results.length)];
+    };
+    pickMovie();
+    if (suggestedMovie.id === queryId) {
+      pickMovie();
+    } else {
+      setMovieData(suggestedMovie);
+    }
   };
 
   useEffect(() => {
@@ -40,10 +53,12 @@ function Single() {
   }, [queryRating, queryGenres]);
 
   console.log(movieData);
+
   return (
     <>
       <p>{queryRating}</p>
       <p>{queryGenres}</p>
+      <p>{queryTitle}</p>
     </>
   );
 }
