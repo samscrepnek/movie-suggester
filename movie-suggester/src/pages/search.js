@@ -31,22 +31,24 @@ function Search() {
     setShowMovie(false);
   };
 
-  const handleClick = (props) => {
-    setMovieQuery(props);
+  const handleClick = (movie) => {
+    setMovieQuery(movie);
     setShowMovie(true);
+    document.getElementById("search-bar").value = "";
   };
 
   return (
     <div>
-      <input type="text" onChange={handleChange}></input>
-      <h2>{searchQuery}</h2>
+      <input id="search-bar" type="text" onChange={handleChange}></input>
       {!showMovie ? (
         <>
           {moviesData ? (
             moviesData.map((movie) => (
               <div key={movie.id}>
-                <button onClick={() => handleClick(movie)}>{movie.title}</button>
-                {/* <h2 onClick={() => handleClick(movie)}>{movie.original_title}</h2> */}
+                <button onClick={() => handleClick(movie)}>
+                  <p>{movie.title}</p>
+                  <img src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`} style={({ width: 500 + "px" }, { height: 600 + "px" })}></img>
+                </button>
               </div>
             ))
           ) : (

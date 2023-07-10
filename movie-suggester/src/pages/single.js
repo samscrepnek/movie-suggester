@@ -23,7 +23,7 @@ function Single(movie) {
   };
 
   let query = movie;
-
+  console.log(query);
   let fetchMovies = async () => {
     // Fetch Query Data
     let queryString = query.movie.toString();
