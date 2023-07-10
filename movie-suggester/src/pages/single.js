@@ -46,7 +46,7 @@ function Single(movie) {
   }, [query]);
 
   let handleClick = () => {
-    if (numClicked >= numSuggested) {
+    if (numClicked === numSuggested) {
       setNoMoreMovies(true);
     } else {
       let movie = suggestedResults[numClicked];
@@ -63,11 +63,18 @@ function Single(movie) {
   return (
     <>
       <p>{queryData.title}</p>
-
-      <button className="suggestion-btn" onClick={handleClick}>
-        get suggestion
-      </button>
-      {suggestedMovie ? <p>{suggestedMovie.title}</p> : <></>}
+      {!noMoreMovies ? (
+        <>
+          <button className="suggestion-btn" onClick={handleClick}>
+            get suggestion
+          </button>
+          {suggestedMovie ? <p>{suggestedMovie.title}</p> : <></>}
+        </>
+      ) : (
+        <>
+          <p>No more suggestion for this movie. Try searching for a different movie title to get more suggestions.</p>
+        </>
+      )}
     </>
   );
 }
