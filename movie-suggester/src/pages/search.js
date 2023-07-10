@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import Single from "./single.js";
 
 function Search() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [movieQuery, setMovieQuery] = useState("");
   const [moviesData, setMoviesData] = useState([]);
+  const [showMovie, setShowMovie] = useState(false);
 
   const options = {
     method: "GET",
@@ -17,7 +20,6 @@ function Search() {
     let results = await fetch(`https://api.themoviedb.org/3/search/movie?query=${searchQuery}&include_adult=false&language=en-US&page=1`, options);
     const jsonData = await results.json();
     setMoviesData(jsonData.results);
-    console.log(jsonData.results);
   };
 
   useEffect(() => {
@@ -26,19 +28,34 @@ function Search() {
 
   const handleChange = (event) => {
     setSearchQuery(event.target.value);
+    setShowMovie(false);
+  };
+
+  const handleClick = (props) => {
+    setMovieQuery(props);
+    setShowMovie(true);
   };
 
   return (
     <div>
       <input type="text" onChange={handleChange}></input>
       <h2>{searchQuery}</h2>
-      {moviesData.map((movie) => (
-        <div key={movie.id}>
-          <Link to={`Single/${movie.id}`}>
-            <h3>{movie.original_title}</h3>
-          </Link>
-        </div>
-      ))}
+      {!showMovie ? (
+        <>
+          {moviesData ? (
+            moviesData.map((movie) => (
+              <div key={movie.id}>
+                <button onClick={() => handleClick(movie)}>{movie.original_title}</button>
+                {/* <h2 onClick={() => handleClick(movie)}>{movie.original_title}</h2> */}
+              </div>
+            ))
+          ) : (
+            <></>
+          )}
+        </>
+      ) : (
+        <Single movie={movieQuery.id} />
+      )}
     </div>
   );
 }
