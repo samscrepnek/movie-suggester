@@ -17,7 +17,7 @@ function Search() {
   };
 
   let fetchData = async () => {
-    let results = await fetch(`https://api.themoviedb.org/3/search/movie?query=${searchQuery}&include_adult=false&language=en-US&page=1`, options);
+    let results = await fetch(`https://api.themoviedb.org/3/search/movie?query=${searchQuery}&include_adult=false&language=en-US&page=1&with_original_language=en-US`, options);
     const jsonData = await results.json();
     setMoviesData(jsonData.results);
   };
@@ -45,7 +45,7 @@ function Search() {
           {moviesData ? (
             moviesData.map((movie) => (
               <div key={movie.id}>
-                <button onClick={() => handleClick(movie)}>{movie.original_title}</button>
+                <button onClick={() => handleClick(movie)}>{movie.title}</button>
                 {/* <h2 onClick={() => handleClick(movie)}>{movie.original_title}</h2> */}
               </div>
             ))

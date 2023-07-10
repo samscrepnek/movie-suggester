@@ -2,13 +2,17 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 function Single(movie) {
+  // Query Information
   const [queryData, setQueryData] = useState([]);
-  const [queryRatingGte, setQueryRatingGte] = useState();
-  const [queryRatingLte, setQueryRatingLte] = useState();
-  const [queryGenres, setQueryGenres] = useState("");
-  const [queryTitle, setQueryTitle] = useState("");
+
+  // Sugested Information
+  const [suggestedResults, setSuggestedResults] = useState();
+  const [numSuggested, setNumSuggested] = useState();
   const [suggestedMovie, setSuggestedMovie] = useState();
   const [noMoreMovies, setNoMoreMovies] = useState(false);
+
+  // other
+  const [numClicked, setNumClicked] = useState(0);
 
   const options = {
     method: "GET",
@@ -19,52 +23,51 @@ function Single(movie) {
   };
 
   let query = movie;
-  console.log(query);
-  let fetchQuery = async () => {
+
+  let fetchMovies = async () => {
+    // Fetch Query Data
     let queryString = query.movie.toString();
-    // console.log(queryString);
-    let results = await fetch(`https://api.themoviedb.org/3/movie/${queryString}&language=en-US`, options);
-    const jsonData = await results.json();
-    setQueryData(jsonData);
-    setQueryRatingGte((jsonData.vote_average - 0.5).toString());
-    setQueryRatingLte((jsonData.vote_average + 0.5).toString());
-    setQueryGenres(jsonData.genres.map((genre) => genre.id.toString()).join("%2C%20"));
-    setQueryTitle(jsonData.original_title);
+    let queryResults = await fetch(`https://api.themoviedb.org/3/movie/${queryString}&language=en-US`, options);
+    const queryJsonData = await queryResults.json();
+    let queryRatingGte = (queryJsonData.vote_average - 0.5).toString();
+    let queryRatingLte = (queryJsonData.vote_average + 0.5).toString();
+    let queryGenres = queryJsonData.genres.map((genre) => genre.id.toString()).join("%2C%20");
+    setQueryData(queryJsonData);
+
+    // Fetch Suggested Movies Data
+    let suggestedResults = await fetch(`https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=vote_average.desc&vote_average.gte=${queryRatingGte}&vote_average.lte=${queryRatingLte}&vote_count.gte=10&with_genres=${queryGenres}&with_original_language=en`, options);
+    const suggestedJsonData = await suggestedResults.json();
+    setSuggestedResults(suggestedJsonData.results.sort(() => Math.random() - 0.5));
+    setNumSuggested(suggestedJsonData.results.length);
   };
 
   useEffect(() => {
-    fetchQuery();
+    fetchMovies();
   }, [query]);
 
-  let handleClick = async () => {
-    let randMovie = [];
-    let results = await fetch(`https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=vote_average.desc&vote_average.gte=${queryRatingGte}&vote_average.lte=${queryRatingLte}&vote_count.gte=10&with_genres=${queryGenres}&with_original_language=en`, options);
-    const jsonData = await results.json();
-
-    if (jsonData.results.lenght > 0) {
-      do {
-        let randNum = Math.floor(Math.random() * jsonData.results.length);
-        randMovie = jsonData.results[randNum];
-        // delete jsonData.results[randNum];
-      } while (randMovie.id === queryData.id);
-      // } while (suggestedMovie ?? randMovie.id === suggestedMovie.id);
-      setSuggestedMovie(randMovie);
-    } else {
+  let handleClick = () => {
+    if (numClicked >= numSuggested) {
       setNoMoreMovies(true);
+    } else {
+      let movie = suggestedResults[numClicked];
+      if (movie.id === queryData.id) {
+        movie = suggestedResults[numClicked + 1];
+        setNumClicked(numClicked + 2);
+      } else {
+        setNumClicked(numClicked + 1);
+      }
+      setSuggestedMovie(movie);
     }
   };
 
   return (
     <>
-      <p>{queryRatingGte}</p>
-      <p>{queryRatingLte}</p>
-      <p>{queryGenres}</p>
-      <p>{queryTitle}</p>
+      <p>{queryData.title}</p>
 
       <button className="suggestion-btn" onClick={handleClick}>
         get suggestion
       </button>
-      {suggestedMovie ? <p>{suggestedMovie.original_title}</p> : <></>}
+      {suggestedMovie ? <p>{suggestedMovie.title}</p> : <></>}
     </>
   );
 }
