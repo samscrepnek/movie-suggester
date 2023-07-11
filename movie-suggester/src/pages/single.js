@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import options from "../constants/options.js";
 
 function Single(movie) {
   // Query Information
@@ -13,18 +13,9 @@ function Single(movie) {
   const [noSuggestions, setNoSuggestions] = useState(false);
 
   // other
-  const [numClicked, setNumClicked] = useState(0);
-
-  const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMTFjYTA0NWJmNGJkNzZlYWUxYWM3YWI0ZTliZjVlZSIsInN1YiI6IjY0OWIzZjJiYWY1OGNiMDBmZmY5YTkyZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.3-cjaKmd_luLs19aUZNpCuLvubL5pjY7IQDBS4UgAIs",
-    },
-  };
-
+  const [numClicks, setNumClicks] = useState(0);
   let query = movie;
-  console.log(query);
+
   let fetchMovies = async () => {
     // Fetch Query Data
     let queryString = query.movie.toString();
@@ -35,7 +26,6 @@ function Single(movie) {
     let queryGenresString = queryJsonData.genres.map((genre) => genre.id.toString()).join("%2C%20");
     let queryGenresIds = queryJsonData.genres.map((genre) => genre.id);
     let excludeGenres = "";
-    console.log(queryGenresIds);
     if (!queryGenresIds.find((element) => element === 10751)) {
       excludeGenres = "&without_genres=10751";
     }
@@ -56,15 +46,15 @@ function Single(movie) {
   }, [query]);
 
   let handleClick = () => {
-    let movie = suggestedResults[numClicked];
+    let movie = suggestedResults[numClicks];
     if (movie.id === queryData.id) {
-      movie = suggestedResults[numClicked + 1];
-      setNumClicked(numClicked + 2);
+      movie = suggestedResults[numClicks + 1];
+      setNumClicks(numClicks + 2);
     } else {
-      setNumClicked(numClicked + 1);
+      setNumClicks(numClicks + 1);
     }
     setSuggestedMovie(movie);
-    if (numClicked + 1 === numSuggested) {
+    if (numClicks + 1 === numSuggested) {
       setNoMoreMovies(true);
     }
   };
@@ -74,7 +64,7 @@ function Single(movie) {
       {suggestedMovie ? (
         <div>
           <section>
-            <p>{`Based on your search of ${queryData.title}, we suggest...`}</p>
+            <p>{`Based on your search of "${queryData.title}", we suggest...`}</p>
           </section>
           <section className="suggested-movie">
             <h2>{suggestedMovie.title}</h2>
@@ -97,9 +87,9 @@ function Single(movie) {
         <>
           {!noMoreMovies ? (
             <>
-              {suggestedMovie ? <p>{`Doesn't look like something you'll like? Try clicking the "get suggestion" button again to get a different sugggestion based on your original search of ${queryData.title}.`}</p> : <></>}
+              {suggestedMovie ? <p>{`Doesn't look like something you'll like? Try clicking the "Get a Suggestion" button again to get a different sugggestion based on your original search of "${queryData.title}".`}</p> : <></>}
               <button className="suggestion-btn" onClick={handleClick}>
-                get suggestion
+                Get a Suggestion
               </button>
             </>
           ) : (

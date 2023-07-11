@@ -1,20 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Single from "./single.js";
+import options from "../constants/options.js";
 
 function Search() {
   const [searchQuery, setSearchQuery] = useState("");
   const [movieQuery, setMovieQuery] = useState("");
   const [moviesData, setMoviesData] = useState([]);
   const [showMovie, setShowMovie] = useState(false);
-
-  const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMTFjYTA0NWJmNGJkNzZlYWUxYWM3YWI0ZTliZjVlZSIsInN1YiI6IjY0OWIzZjJiYWY1OGNiMDBmZmY5YTkyZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.3-cjaKmd_luLs19aUZNpCuLvubL5pjY7IQDBS4UgAIs",
-    },
-  };
 
   let fetchData = async () => {
     let results = await fetch(`https://api.themoviedb.org/3/search/movie?query=${searchQuery}&include_adult=false&language=en-US&page=1&with_original_language=en-US`, options);
