@@ -44,7 +44,7 @@ function Search() {
       </section>
       {!showMovie ? (
         <section className="search-results">
-          {moviesData ? (
+          {moviesData.length > 0 ? (
             moviesData.map((movie) => (
               <article className="result" key={movie.id}>
                 <button onClick={() => handleClick(movie)}>
@@ -58,7 +58,7 @@ function Search() {
               </article>
             ))
           ) : (
-            <></>
+            <p>Type a movie title into the search bar to get a suggestion.</p>
           )}
         </section>
       ) : (
