@@ -39,6 +39,9 @@ function Single(movie) {
     const suggestedJsonData = await suggestedResults.json();
     setSuggestedResults(suggestedJsonData.results.sort(() => Math.random() - 0.5));
     setNumSuggested(suggestedJsonData.results.length);
+    if (suggestedJsonData.results.length === 1) {
+      setNoMoreMovies(true);
+    }
   };
 
   useEffect(() => {
@@ -53,6 +56,9 @@ function Single(movie) {
       if (movie.id === queryData.id) {
         movie = suggestedResults[numClicked + 1];
         setNumClicked(numClicked + 2);
+        if (numClicked + 1 === numSuggested) {
+          setNoMoreMovies(true);
+        }
       } else {
         setNumClicked(numClicked + 1);
       }

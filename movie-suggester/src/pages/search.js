@@ -47,7 +47,7 @@ function Search() {
               <div key={movie.id}>
                 <button onClick={() => handleClick(movie)}>
                   <p>{movie.title}</p>
-                  <img src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`} style={({ width: 500 + "px" }, { height: 600 + "px" })}></img>
+                  <img src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`} style={({ width: 250 + "px" }, { height: 300 + "px" })} alt={`poster for ${movie.title}`}></img>
                 </button>
               </div>
             ))
