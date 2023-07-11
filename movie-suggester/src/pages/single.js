@@ -32,11 +32,17 @@ function Single(movie) {
     const queryJsonData = await queryResults.json();
     let queryRatingGte = (queryJsonData.vote_average - 0.5).toString();
     let queryRatingLte = (queryJsonData.vote_average + 0.5).toString();
-    let queryGenres = queryJsonData.genres.map((genre) => genre.id.toString()).join("%2C%20");
+    let queryGenresString = queryJsonData.genres.map((genre) => genre.id.toString()).join("%2C%20");
+    let queryGenresIds = queryJsonData.genres.map((genre) => genre.id);
+    let excludeGenres = "";
+    console.log(queryGenresIds);
+    if (!queryGenresIds.find((element) => element === 10751)) {
+      excludeGenres = "&without_genres=10751";
+    }
     setQueryData(queryJsonData);
 
     // Fetch Suggested Movies Data
-    let suggestedResults = await fetch(`https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=vote_average.desc&vote_average.gte=${queryRatingGte}&vote_average.lte=${queryRatingLte}&vote_count.gte=10&with_genres=${queryGenres}&with_original_language=en`, options);
+    let suggestedResults = await fetch(`https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=vote_average.desc&vote_average.gte=${queryRatingGte}&vote_average.lte=${queryRatingLte}&vote_count.gte=10&with_genres=${queryGenresString}&with_original_language=en${excludeGenres}`, options);
     const suggestedJsonData = await suggestedResults.json();
     setSuggestedResults(suggestedJsonData.results.sort(() => Math.random() - 0.5));
     setNumSuggested(suggestedJsonData.results.length);
