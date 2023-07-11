@@ -39,22 +39,28 @@ function Search() {
 
   return (
     <div>
-      <input id="search-bar" type="text" onChange={handleChange}></input>
+      <section className="search-bar">
+        <input id="search-bar" type="text" onChange={handleChange}></input>
+      </section>
       {!showMovie ? (
-        <>
+        <section className="search-results">
           {moviesData ? (
             moviesData.map((movie) => (
-              <div key={movie.id}>
+              <article className="result" key={movie.id}>
                 <button onClick={() => handleClick(movie)}>
-                  <p>{movie.title}</p>
                   <img src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`} style={({ width: 250 + "px" }, { height: 300 + "px" })} alt={`poster for ${movie.title}`}></img>
+                  <div>
+                    <p>{movie.title}</p>
+                    <p>{movie.release_date}</p>
+                    <p>{movie.overview}</p>
+                  </div>
                 </button>
-              </div>
+              </article>
             ))
           ) : (
             <></>
           )}
-        </>
+        </section>
       ) : (
         <Single movie={movieQuery.id} />
       )}

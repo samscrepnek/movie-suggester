@@ -10,6 +10,7 @@ function Single(movie) {
   const [numSuggested, setNumSuggested] = useState();
   const [suggestedMovie, setSuggestedMovie] = useState();
   const [noMoreMovies, setNoMoreMovies] = useState(false);
+  const [noSuggestions, setNoSuggestions] = useState(false);
 
   // other
   const [numClicked, setNumClicked] = useState(0);
@@ -39,8 +40,8 @@ function Single(movie) {
     const suggestedJsonData = await suggestedResults.json();
     setSuggestedResults(suggestedJsonData.results.sort(() => Math.random() - 0.5));
     setNumSuggested(suggestedJsonData.results.length);
-    if (suggestedJsonData.results.length === 1) {
-      setNoMoreMovies(true);
+    if (suggestedJsonData.results.length <= 1) {
+      setNoSuggestions(true);
     }
   };
 
@@ -49,36 +50,57 @@ function Single(movie) {
   }, [query]);
 
   let handleClick = () => {
-    if (numClicked === numSuggested) {
-      setNoMoreMovies(true);
+    let movie = suggestedResults[numClicked];
+    if (movie.id === queryData.id) {
+      movie = suggestedResults[numClicked + 1];
+      setNumClicked(numClicked + 2);
     } else {
-      let movie = suggestedResults[numClicked];
-      if (movie.id === queryData.id) {
-        movie = suggestedResults[numClicked + 1];
-        setNumClicked(numClicked + 2);
-        if (numClicked + 1 === numSuggested) {
-          setNoMoreMovies(true);
-        }
-      } else {
-        setNumClicked(numClicked + 1);
-      }
-      setSuggestedMovie(movie);
+      setNumClicked(numClicked + 1);
+    }
+    setSuggestedMovie(movie);
+    if (numClicked + 1 === numSuggested) {
+      setNoMoreMovies(true);
     }
   };
 
   return (
     <>
-      <p>{queryData.title}</p>
-      {!noMoreMovies ? (
-        <>
-          <button className="suggestion-btn" onClick={handleClick}>
-            get suggestion
-          </button>
-          {suggestedMovie ? <p>{suggestedMovie.title}</p> : <></>}
-        </>
+      {suggestedMovie ? (
+        <div>
+          <section>
+            <p>{`Based on your search of ${queryData.title}, we suggest...`}</p>
+          </section>
+          <section className="suggested-movie">
+            <h2>{suggestedMovie.title}</h2>
+            <p>{suggestedMovie.release_date}</p>
+            <img src={`https://image.tmdb.org/t/p/original/${suggestedMovie.poster_path}`} style={({ width: 250 + "px" }, { height: 300 + "px" })} alt={`poster for ${suggestedMovie.title}`}></img>
+            <p>{suggestedMovie.overview}</p>
+          </section>
+        </div>
+      ) : (
+        <section className="query-movie">
+          <h2>{queryData.title}</h2>
+          <p>{queryData.release_date}</p>
+          <img src={`https://image.tmdb.org/t/p/original/${queryData.poster_path}`} style={({ width: 250 + "px" }, { height: 300 + "px" })} alt={`poster for ${queryData.title}`}></img>
+          <p>{queryData.overview}</p>
+        </section>
+      )}
+      {noSuggestions ? (
+        <p>Looks likes there are no suggestions for this movie. It realy is one of a kind. try searching for a different movie title to get sugggestions.</p>
       ) : (
         <>
-          <p>No more suggestion for this movie. Try searching for a different movie title to get more suggestions.</p>
+          {!noMoreMovies ? (
+            <>
+              {suggestedMovie ? <p>{`Doesn't look like something you'll like? Try clicking the "get suggestion" button again to get a different sugggestion based on your original search of ${queryData.title}.`}</p> : <></>}
+              <button className="suggestion-btn" onClick={handleClick}>
+                get suggestion
+              </button>
+            </>
+          ) : (
+            <>
+              <p>No more suggestion for this movie. Try searching for a different movie title to get more suggestions.</p>
+            </>
+          )}
         </>
       )}
     </>
