@@ -60,46 +60,50 @@ function Single(movie) {
   };
 
   return (
-    <>
-      {suggestedMovie ? (
-        <div>
-          <section>
-            <p>{`Based on your search of "${queryData.title}", we suggest...`}</p>
+    <div className="single-wrapper">
+      <section className="movie-single">
+        {suggestedMovie ? (
+          <div>
+            <section>
+              <p>{`Based on your search of "${queryData.title}", we suggest...`}</p>
+            </section>
+            <section className="suggested movie-single-info">
+              <h2>{suggestedMovie.title}</h2>
+              <img src={`https://image.tmdb.org/t/p/original/${suggestedMovie.poster_path}`} alt={`poster for ${suggestedMovie.title}`}></img>
+              <p>{suggestedMovie.overview}</p>
+              <p>Released: {suggestedMovie.release_date}</p>
+            </section>
+          </div>
+        ) : (
+          <section className="query movie-single-info">
+            <h2>{queryData.title}</h2>
+            <img src={`https://image.tmdb.org/t/p/original/${queryData.poster_path}`} alt={`poster for ${queryData.title}`}></img>
+            <p>{queryData.overview}</p>
+            <p>Released: {queryData.release_date}</p>
           </section>
-          <section className="suggested-movie">
-            <h2>{suggestedMovie.title}</h2>
-            <p>{suggestedMovie.release_date}</p>
-            <img src={`https://image.tmdb.org/t/p/original/${suggestedMovie.poster_path}`} style={({ width: 250 + "px" }, { height: 300 + "px" })} alt={`poster for ${suggestedMovie.title}`}></img>
-            <p>{suggestedMovie.overview}</p>
-          </section>
-        </div>
-      ) : (
-        <section className="query-movie">
-          <h2>{queryData.title}</h2>
-          <p>{queryData.release_date}</p>
-          <img src={`https://image.tmdb.org/t/p/original/${queryData.poster_path}`} style={({ width: 250 + "px" }, { height: 300 + "px" })} alt={`poster for ${queryData.title}`}></img>
-          <p>{queryData.overview}</p>
-        </section>
-      )}
-      {noSuggestions ? (
-        <p>Looks likes there are no suggestions for this movie. It realy is one of a kind. try searching for a different movie title to get sugggestions.</p>
-      ) : (
-        <>
-          {!noMoreMovies ? (
-            <>
-              {suggestedMovie ? <p>{`Doesn't look like something you'll like? Try clicking the "Get a Suggestion" button again to get a different sugggestion based on your original search of "${queryData.title}".`}</p> : <></>}
-              <button className="btn btn-light suggestion-btn" type="button" onClick={handleClick}>
-                Get a Suggestion
-              </button>
-            </>
-          ) : (
-            <>
-              <p>No more suggestion for this movie. Try searching for a different movie title to get more suggestions.</p>
-            </>
-          )}
-        </>
-      )}
-    </>
+        )}
+      </section>
+      <section className="single-suggestion">
+        {noSuggestions ? (
+          <p>Looks likes there are no suggestions for this movie. It realy is one of a kind. try searching for a different movie title to get sugggestions.</p>
+        ) : (
+          <>
+            {!noMoreMovies ? (
+              <>
+                {suggestedMovie ? <p>{`Doesn't look like something you'll like? Try clicking the "Get a Suggestion" button again to get a different sugggestion based on your original search of "${queryData.title}".`}</p> : <></>}
+                <button className="btn btn-primary suggestion-btn" type="button" onClick={handleClick}>
+                  Get a Suggestion
+                </button>
+              </>
+            ) : (
+              <>
+                <p>No more suggestion for this movie. Try searching for a different movie title to get more suggestions.</p>
+              </>
+            )}
+          </>
+        )}
+      </section>
+    </div>
   );
 }
 export default Single;
