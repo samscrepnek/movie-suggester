@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/header";
 import Search from "./pages/search";
 import Single from "./pages/single";
+import "bootstrap/dist/css/bootstrap.css";
+import "./styles/styles.scss";
 
 function App() {
   return (

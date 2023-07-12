@@ -1,0 +1,23 @@
+.search-results {
+  .result {
+    button {
+      display: flex;
+      height: 187px;
+
+      img {
+        max-width: 120px;
+        height: auto;
+      }
+
+      .movie-results-info {
+        margin-left: 0.5rem;
+        text-align: left;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: space-between;
+        overflow: hidden;
+        height: 100%;
+      }
+    }
+  }
+}
