@@ -70,7 +70,7 @@ function Search() {
               </article>
             ))
           ) : (
-            <p>Type a movie title into the search bar to get a suggestion.</p>
+            <p className="search-bar-instructions">Type a movie title into the search bar to get a suggestion.</p>
           )}
         </section>
       ) : (

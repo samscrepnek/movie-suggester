@@ -14,7 +14,19 @@ function Single(movie) {
 
   // other
   const [numClicks, setNumClicks] = useState(0);
+  const [poster, setPoster] = useState();
+  const [posterSet, setPosterSet] = useState(false);
   let query = movie;
+
+  let getPoster = async (props) => {
+    setPosterSet(false);
+    let poster = `https://image.tmdb.org/t/p/original/${props}`;
+    setPoster(poster);
+  };
+
+  useEffect(() => {
+    setPosterSet(true);
+  }, [poster]);
 
   let fetchMovies = async () => {
     // Fetch Query Data
@@ -30,7 +42,11 @@ function Single(movie) {
       excludeGenres = "&without_genres=10751";
     }
     setQueryData(queryJsonData);
-
+    if (queryJsonData.poster_path) {
+      getPoster(queryJsonData.poster_path);
+    } else {
+      setPosterSet(true);
+    }
     // Fetch Suggested Movies Data
     let suggestedResults = await fetch(`https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=vote_average.desc&vote_average.gte=${queryRatingGte}&vote_average.lte=${queryRatingLte}&vote_count.gte=10&with_genres=${queryGenresString}&with_original_language=en${excludeGenres}`, options);
     const suggestedJsonData = await suggestedResults.json();
@@ -57,6 +73,7 @@ function Single(movie) {
     if (numClicks + 1 === numSuggested) {
       setNoMoreMovies(true);
     }
+    getPoster(movie.poster_path);
   };
 
   return (
@@ -69,7 +86,8 @@ function Single(movie) {
             </section>
             <section className="suggested movie-single-info">
               <h2>{suggestedMovie.title}</h2>
-              {suggestedMovie.poster_path ? <img src={`https://image.tmdb.org/t/p/original/${suggestedMovie.poster_path}`} alt={`poster for ${suggestedMovie.title}`} async></img> : <img src="https://upload.wikimedia.org/wikipedia/commons/c/c2/No_image_poster.png" alt="Default poster when no poster is available." async></img>}
+              {/* {suggestedMovie.poster_path ? <img src={`https://image.tmdb.org/t/p/original/${suggestedMovie.poster_path}`} alt={`poster for ${suggestedMovie.title}`} async></img> : <img src="https://upload.wikimedia.org/wikipedia/commons/c/c2/No_image_poster.png" alt="Default poster when no poster is available." async></img>} */}
+              {posterSet ? <>{suggestedMovie.poster_path ? <img src={poster} alt={`poster for ${suggestedMovie.title}`} async></img> : <img src="https://upload.wikimedia.org/wikipedia/commons/c/c2/No_image_poster.png" alt="Default poster when no poster is available." async></img>}</> : <></>}
               <p>{suggestedMovie.overview}</p>
               <p>Released: {suggestedMovie.release_date}</p>
             </section>
