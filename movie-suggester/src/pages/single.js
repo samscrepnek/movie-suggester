@@ -90,10 +90,10 @@ function Single(movie) {
           <>
             {!noMoreMovies ? (
               <>
-                {suggestedMovie ? <p>{`Doesn't look like something you'll like? Try clicking the "Get a Suggestion" button again to get a different sugggestion based on your original search of "${queryData.title}".`}</p> : <></>}
                 <button className="btn btn-primary suggestion-btn" type="button" onClick={handleClick}>
                   Get a Suggestion
                 </button>
+                {suggestedMovie ? <p>{`Doesn't look like something you'll like? Try clicking the "Get a Suggestion" button again to get a different sugggestion based on your original search of "${queryData.title}".`}</p> : <></>}
               </>
             ) : (
               <>
