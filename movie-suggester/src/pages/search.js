@@ -34,7 +34,7 @@ function Search() {
   };
 
   return (
-    <div>
+    <div className="content-wrapper">
       <section className="search-bar">
         <div className="input-group mb-3">
           <input type="text" id="search-bar-input" className="form-control" aria-label="Search bar input" aria-describedby="inputSearch-bar" onChange={handleChange}></input>
@@ -55,7 +55,7 @@ function Search() {
             moviesData.map((movie) => (
               <article className="result" key={movie.id}>
                 <button onClick={() => handleClick(movie)}>
-                  <img src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`} alt={`poster for ${movie.title}`}></img>
+                  {movie.poster_path ? <img src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`} alt={`Poster for ${movie.title}`} async></img> : <img src="https://upload.wikimedia.org/wikipedia/commons/c/c2/No_image_poster.png" alt="Default poster when no poster is available." async></img>}
                   <div className="movie-results-info">
                     <div className="results-title/release">
                       <p>{movie.title}</p>

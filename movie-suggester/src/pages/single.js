@@ -64,12 +64,12 @@ function Single(movie) {
       <section className="movie-single">
         {suggestedMovie ? (
           <div>
-            <section>
+            <section className="single-query-title">
               <p>{`Based on your search of "${queryData.title}", we suggest...`}</p>
             </section>
             <section className="suggested movie-single-info">
               <h2>{suggestedMovie.title}</h2>
-              <img src={`https://image.tmdb.org/t/p/original/${suggestedMovie.poster_path}`} alt={`poster for ${suggestedMovie.title}`}></img>
+              {suggestedMovie.poster_path ? <img src={`https://image.tmdb.org/t/p/original/${suggestedMovie.poster_path}`} alt={`poster for ${suggestedMovie.title}`} async></img> : <img src="https://upload.wikimedia.org/wikipedia/commons/c/c2/No_image_poster.png" alt="Default poster when no poster is available." async></img>}
               <p>{suggestedMovie.overview}</p>
               <p>Released: {suggestedMovie.release_date}</p>
             </section>
@@ -77,12 +77,13 @@ function Single(movie) {
         ) : (
           <section className="query movie-single-info">
             <h2>{queryData.title}</h2>
-            <img src={`https://image.tmdb.org/t/p/original/${queryData.poster_path}`} alt={`poster for ${queryData.title}`}></img>
+            {queryData.poster_path ? <img src={`https://image.tmdb.org/t/p/original/${queryData.poster_path}`} alt={`poster for ${queryData.title}`} async></img> : <img src="https://upload.wikimedia.org/wikipedia/commons/c/c2/No_image_poster.png" alt="Default poster when no poster is available." async></img>}
             <p>{queryData.overview}</p>
             <p>Released: {queryData.release_date}</p>
           </section>
         )}
       </section>
+      <div className="dividing-line"></div>
       <section className="single-suggestion">
         {noSuggestions ? (
           <p>Looks likes there are no suggestions for this movie. It realy is one of a kind. try searching for a different movie title to get sugggestions.</p>
@@ -90,10 +91,10 @@ function Single(movie) {
           <>
             {!noMoreMovies ? (
               <>
-                <button className="btn btn-primary suggestion-btn" type="button" onClick={handleClick}>
+                <button className="btn btn-light suggestion-btn" type="button" onClick={handleClick}>
                   Get a Suggestion
                 </button>
-                {suggestedMovie ? <p>{`Doesn't look like something you'll like? Try clicking the "Get a Suggestion" button again to get a different sugggestion based on your original search of "${queryData.title}".`}</p> : <></>}
+                {suggestedMovie ? <p className="suggestion-btn-info">{`Doesn't look like something you'll like? Try clicking the "Get a Suggestion" button again to get a different sugggestion based on your original search of "${queryData.title}".`}</p> : <></>}
               </>
             ) : (
               <>

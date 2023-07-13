@@ -1,6 +1,10 @@
 .single-wrapper {
-  padding: 0 0.5rem;
+  margin: 0 0.5rem;
   .movie-single {
+    .single-query-title {
+      font-size: 0.8rem;
+      text-align: center;
+    }
     .movie-single-info {
       h2 {
         text-align: center;
@@ -15,12 +19,18 @@
       }
     }
   }
-
+  .dividing-line {
+    border-bottom: 2px solid white;
+  }
   .single-suggestion {
+    text-align: center;
     .suggestion-btn {
       display: block;
       margin: 2rem auto;
       width: 18rem;
+    }
+    .suggestion-btn-info {
+      font-size: 0.8rem;
     }
   }
 }
