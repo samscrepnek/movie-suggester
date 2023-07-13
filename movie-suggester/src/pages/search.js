@@ -24,6 +24,9 @@ function Search() {
     setShowMovie(false);
     setShowSearchIcon(false);
     setSearchQuery(event.target.value);
+    if (event.target.value === "") {
+      setShowSearchIcon(true);
+    }
   };
 
   const handleClick = (movie) => {
@@ -37,7 +40,7 @@ function Search() {
     <div className="content-wrapper">
       <section className="search-bar">
         <div className="input-group mb-3">
-          <input type="text" id="search-bar-input" className="form-control" aria-label="Search bar input" aria-describedby="inputSearch-bar" onChange={handleChange}></input>
+          <input type="text" id="search-bar-input" className={`form-control ${showSearchIcon ? "" : "expanded"}`} aria-label="Search bar input" aria-describedby="inputSearch-bar" onChange={handleChange}></input>
           {showSearchIcon ? (
             <span className="input-group-text" id="search-bar-span">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-search" viewBox="0 0 16 16">
@@ -50,7 +53,7 @@ function Search() {
         </div>
       </section>
       {!showMovie ? (
-        <section className="search-results">
+        <section className={`search-results ${moviesData.length > 0 ? "expanded" : ""}`}>
           {moviesData.length > 0 ? (
             moviesData.map((movie) => (
               <article className="result" key={movie.id}>

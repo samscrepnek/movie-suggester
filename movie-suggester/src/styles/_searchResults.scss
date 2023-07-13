@@ -1,4 +1,9 @@
+.search-results.expanded {
+  margin: -1rem 0.5rem 0;
+}
+
 .search-results {
+  margin: 0 0.5rem;
   .result:nth-child(1) {
     button {
       border-top: 2px solid black;
