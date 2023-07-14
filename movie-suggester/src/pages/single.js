@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import options from "../constants/options.js";
+import Loading from "../components/Loading.js";
 
 function Single(movie) {
   // Query Information
@@ -87,7 +88,7 @@ function Single(movie) {
             <section className="suggested movie-single-info">
               <h2>{suggestedMovie.title}</h2>
               {/* {suggestedMovie.poster_path ? <img src={`https://image.tmdb.org/t/p/original/${suggestedMovie.poster_path}`} alt={`poster for ${suggestedMovie.title}`} async></img> : <img src="https://upload.wikimedia.org/wikipedia/commons/c/c2/No_image_poster.png" alt="Default poster when no poster is available." async></img>} */}
-              {posterSet ? <>{suggestedMovie.poster_path ? <img src={poster} alt={`poster for ${suggestedMovie.title}`} async></img> : <img src="https://upload.wikimedia.org/wikipedia/commons/c/c2/No_image_poster.png" alt="Default poster when no poster is available." async></img>}</> : <></>}
+              {posterSet ? <>{suggestedMovie.poster_path ? <img src={poster} alt={`poster for ${suggestedMovie.title}`} async></img> : <img src="https://upload.wikimedia.org/wikipedia/commons/c/c2/No_image_poster.png" alt="Default poster when no poster is available." async></img>}</> : <Loading />}
               <p>{suggestedMovie.overview}</p>
               <p>Released: {suggestedMovie.release_date}</p>
             </section>
