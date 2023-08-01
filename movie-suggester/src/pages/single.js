@@ -20,9 +20,10 @@ function Single(movie) {
   let query = movie;
 
   let getPoster = async (props) => {
-    setPosterSet(false);
+    // setPosterSet(false);
     let poster = `https://image.tmdb.org/t/p/original/${props}`;
     setPoster(poster);
+    // setPosterSet(true);
   };
 
   useEffect(() => {
@@ -63,6 +64,8 @@ function Single(movie) {
   }, [query]);
 
   let handleClick = () => {
+    setPosterSet(false);
+    setPoster(null);
     let movie = suggestedResults[numClicks];
     if (movie.id === queryData.id) {
       movie = suggestedResults[numClicks + 1];
