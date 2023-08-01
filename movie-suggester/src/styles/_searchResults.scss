@@ -6,11 +6,7 @@
   margin: 0 auto;
   width: 96%;
   transition: height 2s;
-  .result:nth-child(1) {
-    button {
-      // border-top: 2px solid black;
-    }
-  }
+
   .result {
     border: 2px solid #dee2e6;
     button {
@@ -18,7 +14,7 @@
       height: 185px;
       width: 100%;
       border: none;
-      // border-bottom: 2px solid black;
+
       background-color: white;
       img {
         max-width: 120px;
