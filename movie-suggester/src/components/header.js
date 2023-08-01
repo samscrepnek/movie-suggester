@@ -1,7 +1,11 @@
+import { Link } from "react-router-dom";
+
 function Header() {
   return (
     <header>
-      <h1>Movie Suggester</h1>
+      <Link to="/">
+        <h1>Movie Suggester</h1>
+      </Link>
     </header>
   );
 }

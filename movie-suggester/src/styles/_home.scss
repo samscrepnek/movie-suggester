@@ -1,0 +1,13 @@
+.content-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  height: 27vh;
+  align-content: space-between;
+  max-width: 400px;
+  margin: 9rem auto 0;
+  transition: margin-top 0.2s;
+}
+
+.content-wrapper.expanded {
+  margin-top: 2rem;
+}

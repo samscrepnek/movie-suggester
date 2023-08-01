@@ -37,7 +37,7 @@ function Search() {
   };
 
   return (
-    <div className="content-wrapper">
+    <div className={`content-wrapper ${moviesData.length > 0 ? "expanded" : ""}`}>
       <section className="search-bar">
         <div className="input-group mb-3">
           <input type="text" id="search-bar-input" className={`form-control ${showSearchIcon ? "" : "expanded"}`} aria-label="Search bar input" aria-describedby="inputSearch-bar" onChange={handleChange}></input>
