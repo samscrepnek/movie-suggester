@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import Single from "./single.js";
 import options from "../constants/options.js";
 
@@ -29,54 +28,71 @@ function Search() {
     }
   };
 
-  const handleClick = (movie) => {
+  const handleClickMovie = (movie) => {
     setMovieQuery(movie);
     setShowMovie(true);
     setShowSearchIcon(true);
     document.getElementById("search-bar-input").value = "";
   };
 
+  const handleClickHeader = () => {
+    setShowMovie(false);
+    setShowSearchIcon(true);
+    setMoviesData([]);
+    document.getElementById("search-bar-input").value = "";
+  };
+
   return (
-    <div className={`content-wrapper ${moviesData.length > 0 ? "expanded" : ""}`}>
-      <section className="search-bar">
-        <div className="input-group mb-3">
-          <input type="text" id="search-bar-input" className={`form-control ${showSearchIcon ? "" : "expanded"}`} aria-label="Search bar input" aria-describedby="inputSearch-bar" onChange={handleChange}></input>
-          {showSearchIcon ? (
-            <span className="input-group-text" id="search-bar-span">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-search" viewBox="0 0 16 16">
-                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-              </svg>
-            </span>
+    <>
+      <header>
+        <button onClick={handleClickHeader}>
+          <h1>Movie Suggester</h1>
+        </button>
+      </header>
+
+      <main>
+        <div className={`content-wrapper ${moviesData.length > 0 ? "expanded" : ""}`}>
+          <section className="search-bar">
+            <div className="input-group mb-3">
+              <input type="text" id="search-bar-input" className={`form-control ${showSearchIcon ? "" : "expanded"}`} aria-label="Search bar input" aria-describedby="inputSearch-bar" onChange={handleChange}></input>
+              {showSearchIcon ? (
+                <span className="input-group-text" id="search-bar-span">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                  </svg>
+                </span>
+              ) : (
+                <></>
+              )}
+            </div>
+          </section>
+          {!showMovie ? (
+            <section className={`search-results ${moviesData.length > 0 ? "expanded" : ""}`}>
+              {moviesData.length > 0 ? (
+                moviesData.map((movie) => (
+                  <article className="result" key={movie.id}>
+                    <button onClick={() => handleClickMovie(movie)}>
+                      {movie.poster_path ? <img src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`} alt={`Poster for ${movie.title}`} async></img> : <img src="https://upload.wikimedia.org/wikipedia/commons/c/c2/No_image_poster.png" alt="Default poster when no poster is available." async></img>}
+                      <div className="movie-results-info">
+                        <div className="results-title/release">
+                          <p>{movie.title}</p>
+                          <p>{movie.release_date}</p>
+                        </div>
+                        <p>{movie.overview.length > 85 ? movie.overview.substring(0, 85) + "..." : movie.overview}</p>
+                      </div>
+                    </button>
+                  </article>
+                ))
+              ) : (
+                <p className="search-bar-instructions">Type a movie title into the search bar to get a suggestion.</p>
+              )}
+            </section>
           ) : (
-            <></>
+            <Single movie={movieQuery.id} />
           )}
         </div>
-      </section>
-      {!showMovie ? (
-        <section className={`search-results ${moviesData.length > 0 ? "expanded" : ""}`}>
-          {moviesData.length > 0 ? (
-            moviesData.map((movie) => (
-              <article className="result" key={movie.id}>
-                <button onClick={() => handleClick(movie)}>
-                  {movie.poster_path ? <img src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`} alt={`Poster for ${movie.title}`} async></img> : <img src="https://upload.wikimedia.org/wikipedia/commons/c/c2/No_image_poster.png" alt="Default poster when no poster is available." async></img>}
-                  <div className="movie-results-info">
-                    <div className="results-title/release">
-                      <p>{movie.title}</p>
-                      <p>{movie.release_date}</p>
-                    </div>
-                    <p>{movie.overview}</p>
-                  </div>
-                </button>
-              </article>
-            ))
-          ) : (
-            <p className="search-bar-instructions">Type a movie title into the search bar to get a suggestion.</p>
-          )}
-        </section>
-      ) : (
-        <Single movie={movieQuery.id} />
-      )}
-    </div>
+      </main>
+    </>
   );
 }
 

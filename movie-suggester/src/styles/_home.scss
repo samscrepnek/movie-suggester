@@ -11,3 +11,13 @@
 .content-wrapper.expanded {
   margin-top: 2rem;
 }
+
+header {
+  button {
+    border: none;
+    background-color: transparent;
+    display: block;
+    margin: 0 auto;
+    color: white;
+  }
+}
