@@ -1,8 +1,7 @@
 .content-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  height: 27vh;
-  align-content: space-between;
+  // display: flex;
+  // flex-wrap: wrap;
+  // align-content: space-between;
   max-width: 400px;
   margin: 9rem auto 0;
   transition: margin-top 0.2s;
@@ -20,4 +19,14 @@ header {
     margin: 0 auto;
     color: white;
   }
+}
+
+footer {
+  // position: fixed;
+  // bottom: 0;
+  // right: 0;
+  // left: 0;
+  text-align: center;
+  // z-index: -100;
+  width: 100%;
 }

@@ -43,7 +43,7 @@ function Search() {
   };
 
   return (
-    <>
+    <div className="flex-container">
       <header>
         <button onClick={handleClickHeader}>
           <h1>Movie Suggester</h1>
@@ -92,7 +92,7 @@ function Search() {
           )}
         </div>
       </main>
-    </>
+    </div>
   );
 }
 
